@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1"/>
+    <title>Week 06 assignment</title>
+    <link rel="stylesheet" href="week04_style.css" type="text/css">
+</head>
+
+<header>
+    <div class="welcome">Please Enter Account and Password</div> 
+</header>
+
+<body>
+    
+    <div class = "content">
+        <div>Register New Account</div>
+    </div>
+
+    <div class = "content">    
+        <form action="/signup" method="POST">
+            Name <input type="text" name= "n" />
+            Account <input type="text" name= "a" />
+            Password <input type="text" name = "p" />
+            <button>Register</button>
+        </form>
+    </div>
+
+    <br>    
+    <hr/>
+
+    <div class = "content">
+        <div>System Log in</div>
+    </div>
+    <div class="content">
+        <br>
+        <form action="/signin" method="POST">
+            Account <input type="text" name= "a" />
+            Password <input type="text" name = "p" />
+            <button>Log In</button>
+        </form>
+    </div>
+</body>
