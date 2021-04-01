@@ -7,7 +7,7 @@
 </head>
 
 <header>
-    <div class="welcome">Please Enter Account and Password</div> 
+    <div class="welcome">Welcome, please register or login</div> 
 </header>
 
 <body>
@@ -18,9 +18,9 @@
 
     <div class = "content">    
         <form action="/signup" method="POST">
-            Name <input type="text" name= "n" />
-            Account <input type="text" name= "a" />
-            Password <input type="text" name = "p" />
+            Name <input type="text" name= "n" required/>
+            Account <input type="text" name= "a" required/>
+            Password <input type="text" name = "p" required/>
             <button>Register</button>
         </form>
     </div>

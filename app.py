@@ -1,7 +1,9 @@
 from flask import Flask,request,redirect,render_template, session,url_for, flash
 import json
 from flask_mysqldb import MySQL
+
 # import mysql.connector
+
 
 app = Flask(__name__,
             static_folder="static",
@@ -9,7 +11,7 @@ app = Flask(__name__,
         )
 app.secret_key = '_5#y2L"F4Q8z\n\xec]/'
 
-app.config["MYSQL_hOST"] = 'localhost'
+app.config["MYSQL_HOST"] = 'localhost'
 app.config["MYSQL_USER"] = 'root'
 app.config["MYSQL_PASSWORD"] = 'root'
 app.config["MYSQL_DB"] = 'wk6'
@@ -22,14 +24,14 @@ def index():
 
 @app.route("/signup", methods = ['POST'])
 def signup():
-    userRegistration = request.form
-    name = userRegistration["n"]
-    account = userRegistration["a"]
-    password = userRegistration["p"]
-    cur = mysql.connector.cursor()
-    cur.execute("INSERT INTO user(name, account, password) VALUES(%s, %s, %s)",(name,account,password))
+    
+    name = request.form["n"]
+    account = request.form["a"]
+    password = request.form["p"]
+    my_cursor = mysql.connection.cursor()
+    my_cursor.execute("INSERT INTO user(name, account, password) VALUES(%s, %s, %s)",(name,account,password))
     mysql.connection.commit()
-    cur.close()
+    my_cursor.close()
     return 'success'
 
 
@@ -96,5 +98,6 @@ def signout():
     print(session)
     return redirect(url_for("index"))
 
+if __name__ == "__main__":
 #debug=True 不用重啟app.py就能看修正結果 
-app.run(port=3000, debug=True)
+    app.run(port=3000, debug=True)
