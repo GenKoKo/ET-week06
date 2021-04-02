@@ -1,8 +1,8 @@
 from flask import Flask,request,redirect,render_template, session,url_for, flash
 import json
 from flask_mysqldb import MySQL
+# import MySQLdb.cursors
 
-# import mysql.connector
 
 
 app = Flask(__name__,
@@ -26,69 +26,70 @@ def index():
 def signup():
     
     name = request.form["n"]
-    account = request.form["a"]
+    username = request.form["a"]
     password = request.form["p"]
+    #不用MySQLdb.cursors.DictCursor也可以運行
     my_cursor = mysql.connection.cursor()
-    my_cursor.execute("INSERT INTO user(name, account, password) VALUES(%s, %s, %s)",(name,account,password))
-    mysql.connection.commit()
-    my_cursor.close()
-    return 'success'
+
+    #不知為何 必預用[]而不用能()
+    my_cursor.execute("SELECT * FROM user WHERE account = %s", [username])
+    check_username_exist = my_cursor.fetchone()
+
+    if check_username_exist:
+        return redirect(url_for("error", message = 'Account Exist! '))
+
+    else:
+        my_cursor.execute("INSERT INTO user(name, account, password) VALUES(%s, %s, %s)",(name,username,password))
+        mysql.connection.commit()
+        my_cursor.close()
+        # flash("Register Success")  #flash應該不是跳出式的訊息
+        return redirect(url_for("index"))
 
 
-    # if request.form["n"] == None:
-    #     flash("Please enter your name")
-    # elif request.form["a"] == None:
-    #     flash("Please enter a new account")
-    # elif  request.form["p"] == None:
-    #     flash("Please enter the password")
 
 
 
 @app.route("/member", methods = ["GET","POST"])
 def member():
-    if "ac" in session and request.method == "POST":
-        return render_template("/member.html")
-    elif "ac" in session and request.method == "GET":
-        print("direct member page test success")
-        print(session)
-        return render_template("/member.html")
-    
-    elif not "ac" in session and request.method == "GET":
-        print("status: no login")
-        print(session)
-        return redirect(url_for("index"))
+
+    if "ac" in session:
+        my_cursor = mysql.connection.cursor()
+        my_cursor.execute("SELECT * FROM user WHERE account = %s", [session['ac']])
+        account = my_cursor.fetchone()
+        print(account)
+        return render_template("/member.html",account=account)
+
+    return redirect(url_for("index"))
 
 
 @app.route("/signin", methods =["POST"])
 def signin():
 
-    if request.form["a"] == "test" and request.form["p"] == "test":
-        session["ac"] = request.form["a"]
-        session["pa"] = request.form["p"]
+    username = request.form["a"]
+    password = request.form["p"]
+    my_cursor = mysql.connection.cursor()
+    my_cursor.execute("SELECT * FROM user WHERE account = %s and password = %s", [username,password])
+    check_username_password_match = my_cursor.fetchone()
+
+    if check_username_password_match:
+        print(my_cursor)
+        session["ac"] = username
+        session["pa"] = password
         print("status: log in")
         print(session)
         return redirect(url_for("member"))
 
-    elif request.form["a"] != "test" or request.form["p"] != "test":
-        print("status: login fail")
-        print(session)
-        return redirect(url_for("error"))
-
-    # 這會造成 未登錄狀況，直接landing member page → 產生bad request 原因未明 
-    # elif request.method == "GET" and session["ac"] == "test" and session["pa"] == "test":
-    #     print("member test success")
-    #     return render_template("/member.html")
-
-
+ 
     else:
         print(session)
         print("status: login fail")
-        return redirect(url_for("error"))
+        return redirect(url_for("error", message="Wrong Account or Password! "))
 
 
 @app.route("/error")
 def error():
-    return render_template("/error.html")
+    info = request.args.get("message")
+    return render_template("/error.html",info=info)
 
 @app.route("/signout")
 def signout():

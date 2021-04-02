@@ -11,3 +11,5 @@
 [Using Databases With Flask - Python and Flask #8 - YouTube](https://www.youtube.com/watch?v=hbDRTZarMUw)
 
 [Python Flask with MySQL Database - YouTube](https://www.youtube.com/watch?v=6L3HNyXEais)
+
+[Login System with Python Flask and MySQL (codeshack.io)](https://codeshack.io/login-system-python-flask-mysql/)
