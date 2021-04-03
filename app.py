@@ -96,6 +96,7 @@ def signout():
     print(session)
     return redirect(url_for("index"))
 
+#有無import其他檔案
 if __name__ == "__main__":
 #debug=True 不用重啟app.py就能看修正結果 
     app.run(port=3000, debug=True)
