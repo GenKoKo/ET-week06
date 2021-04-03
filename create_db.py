@@ -14,8 +14,8 @@ mycursor = mydb.cursor()
 
 # mycursor.execute("CREATE DATABASE wk6")
 mycursor.execute("USE wk6")
-mycursor.execute("CREATE table users06 (username varchar(255) NOT NULL , password varchar(255) NOT NULL, name varchar(255) NOT NULL, PRIMARY KEY(username))")
-mycursor.execute("INSERT INTO users (name, username, password) VALUES(%s, %s, %s)",('test1','test-1','test_1'))
+mycursor.execute("CREATE table user (username varchar(20) NOT NULL , password varchar(20) NOT NULL, name varchar(255) NOT NULL, PRIMARY KEY(username))")
+mycursor.execute("INSERT INTO users (name, username, password) VALUES(%s, %s, %s)",('test_name','test_username','test_password'))
 
 mycursor.execute("SELECT * FROM users")
 # mycursor.execute("SHOW DATABASES")

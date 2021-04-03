@@ -32,21 +32,18 @@ def signup():
     my_cursor = mysql.connection.cursor()
 
     #不知為何 必預用[]而不用能()
-    my_cursor.execute("SELECT * FROM user WHERE account = %s", [username])
+    my_cursor.execute("SELECT * FROM user WHERE username = %s", [username])
     check_username_exist = my_cursor.fetchone()
 
     if check_username_exist:
         return redirect(url_for("error", message = 'Account Exist! '))
 
     else:
-        my_cursor.execute("INSERT INTO user(name, account, password) VALUES(%s, %s, %s)",(name,username,password))
+        my_cursor.execute("INSERT INTO user(name, username, password) VALUES(%s, %s, %s)",(name,username,password))
         mysql.connection.commit()
         my_cursor.close()
         # flash("Register Success")  #flash應該不是跳出式的訊息
         return redirect(url_for("index"))
-
-
-
 
 
 @app.route("/member", methods = ["GET","POST"])
@@ -54,7 +51,7 @@ def member():
 
     if "ac" in session:
         my_cursor = mysql.connection.cursor()
-        my_cursor.execute("SELECT * FROM user WHERE account = %s", [session['ac']])
+        my_cursor.execute("SELECT * FROM user WHERE username = %s", [session['ac']])
         account = my_cursor.fetchone()
         print(account)
         return render_template("/member.html",account=account)
@@ -68,7 +65,7 @@ def signin():
     username = request.form["a"]
     password = request.form["p"]
     my_cursor = mysql.connection.cursor()
-    my_cursor.execute("SELECT * FROM user WHERE account = %s and password = %s", [username,password])
+    my_cursor.execute("SELECT * FROM user WHERE username = %s and password = %s", [username,password])
     check_username_password_match = my_cursor.fetchone()
 
     if check_username_password_match:
