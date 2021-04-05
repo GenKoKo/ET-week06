@@ -3,9 +3,9 @@ import mysql.connector
 # print(dir(mysql))
 
 mydb = mysql.connector.connect(
-  host="localhost",
-  user="root",
-  passwd="root"
+  host="",
+  user="",
+  passwd=""
 )
 
 # print(mydb)
