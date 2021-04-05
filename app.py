@@ -9,11 +9,11 @@ app = Flask(__name__,
             static_folder="static",
             static_url_path="/"
         )
-app.secret_key = '_5#y2L"F4Q8z\n\xec]/'
+app.secret_key = ''
 
 app.config["MYSQL_HOST"] = 'localhost'
 app.config["MYSQL_USER"] = 'root'
-app.config["MYSQL_PASSWORD"] = 'root'
+app.config["MYSQL_PASSWORD"] = ''
 app.config["MYSQL_DB"] = 'wk6'
 
 mysql = MySQL(app)
